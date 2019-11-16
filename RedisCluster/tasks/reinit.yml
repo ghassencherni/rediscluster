@@ -1,8 +1,15 @@
 ---
-- name: delete Redis containers
+- name: Delete Redis containers
   docker_container:
     name: "redis-{{ item }}"
     state: absent
   with_sequence: count=2
   ignore_errors: yes
 
+
+- name: Delete Redis bridge
+  docker_network:
+    name: redis_bridge
+    state: absent
+    force: yes
+  ignore_errors: yes
