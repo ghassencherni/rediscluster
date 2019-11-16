@@ -1,6 +1,10 @@
 ---
 - name: Configure
-  template: src=redis.conf.j2   dest=/tmp/redis.conf mode=0777
+  template: src=redis.conf.j2   dest=/tmp/redis.conf.{{ item.name }} mode=0777
+  with_items:
+    - { port: "{{ redis_1_port }}", data_port: "{{ redis_1_data_port }}", name: "{{ container_1_name }}", ip: "{{ container_1_ip }}" }
+    - { port: "{{ redis_2_port }}", data_port: "{{ redis_2_data_port }}", name: "{{ container_2_name }}", ip: "{{ container_2_ip }}" }
+
 
 
 - name: Create redis bridge network
@@ -12,16 +16,18 @@
 
 - name: Start Redis 1 container
   docker_container:
-    name: "redis-1"
+    name: "{{ item.name }}"
     recreate: yes
     image: "redis:latest"
     volumes:
-      - /tmp/redis.conf:/usr/local/etc/redis/redis.conf
+      - /tmp/redis.conf.{{ item.name }}:/usr/local/etc/redis/redis.conf
     ports:
-      - "{{ redis_1_port }}:{{ redis_1_port }}"
-      - "{{ redis_1_data_port }}:{{ redis_1_data_port }}"
+      - "{{ item.port }}:{{ item.port }}"
+      - "{{ item.data_port }}:{{ item.data_port }}"
     networks:
       - name: redis_bridge
-        ipv4_address: "{{ container_ip }}"
+        ipv4_address: "{{ item.ip }}"
     command: redis-server /usr/local/etc/redis/redis.conf
-
+  with_items:
+     - { port: "{{ redis_1_port }}", data_port: "{{ redis_1_data_port }}", name: "{{ container_1_name }}", ip: "{{ container_1_ip }}" }
+     - { port: "{{ redis_2_port }}", data_port: "{{ redis_2_data_port }}", name: "{{ container_2_name }}", ip: "{{ container_2_ip }}" }

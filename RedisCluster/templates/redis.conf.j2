@@ -5,7 +5,7 @@ timeout 0
 tcp-keepalive 300
 daemonize no
 supervised no
-pidfile /var/run/redis_6379.pid
+pidfile /var/run/redis_{{ item.port }}.pid
 loglevel notice
 logfile ""
 databases 16
@@ -58,11 +58,11 @@ hz 10
 dynamic-hz yes
 aof-rewrite-incremental-fsync yes
 rdb-save-incremental-fsync yes
-port 6001
+port {{ item.port }}
 cluster-enabled yes
 cluster-config-file nodes.conf
 cluster-node-timeout 5000
 appendonly yes
-cluster-announce-ip {{ container_ip }}
-cluster-announce-port {{ redis_1_port }}
-cluster-announce-bus-port {{ redis_1_data_port }}
+cluster-announce-ip {{ item.ip }}
+cluster-announce-port {{ item.port }}
+cluster-announce-bus-port {{ item.data_port }}
