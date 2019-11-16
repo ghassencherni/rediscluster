@@ -1,0 +1,11 @@
+---
+# defaults file for RedisCluster
+
+redis_1_data_port: 16001
+redis_1_port: 6001
+
+redis_2_data_port: 6002
+redis_2_port: 16002
+
+container_ip: 172.18.10.2
+

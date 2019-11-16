@@ -1,0 +1,8 @@
+---
+- name: delete Redis containers
+  docker_container:
+    name: "redis-{{ item }}"
+    state: absent
+  with_sequence: count=2
+  ignore_errors: yes
+

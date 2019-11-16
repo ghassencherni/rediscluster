@@ -1,0 +1,30 @@
+---
+- name: Configure
+  template: src=redis.conf.j2   dest=/tmp/redis.conf mode=0777
+
+
+- name: Create redis bridge network
+  docker_network:
+    name: redis_bridge
+    ipam_options:
+      subnet: "172.18.10.0/16"
+      gateway: "172.18.10.1"
+
+- name: Start Redis 1 container
+  docker_container:
+    name: "redis-1"
+    recreate: yes
+    image: "redis:latest"
+    volumes:
+      - /tmp/redis.conf:/usr/local/etc/redis/redis.conf
+    ports:
+      - "{{ redis_1_port }}:{{ redis_1_port }}"
+      - "{{ redis_1_data_port }}:{{ redis_1_data_port }}"
+  #    - 6001:6001
+  #    - 16001:16001
+    networks:
+      - name: redis_bridge
+        ipv4_address: "172.18.10.2"
+    command: redis-server /usr/local/etc/redis/redis.conf
+
+
