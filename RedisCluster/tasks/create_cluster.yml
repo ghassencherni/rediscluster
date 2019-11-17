@@ -1,9 +1,18 @@
-- name: Create Cluster
-  docker_container:
-    name: redis-cluster
-    image: redis:latest
-    state: started
-    ports:
-    - "6379:6379"
-    command: [ "sh", "-c", "echo 'yes' | redis-cli --cluster create {{ node1_hostname }}:{{ redis_1_port }} {{ node1_hostname }}:{{ redis_2_port }} {{ node2_hostname }}:{{ redis_1_port }} {{ node2_hostname }}:{{ redis_2_port }} {{ node3_hostname }}:{{ redis_1_port }} {{ node3_hostname }}:{{ redis_2_port }}" ]
-  when: inventory_hostname == node1_hostname
+#- name: Create Cluster
+#  docker_container:
+#    name: redis-cluster
+#    image: redis:latest
+#    state: started
+#    ports:
+#    - "6379:6379"
+#    command: [ "sh", "-c", "echo 'yes' | redis-cli --cluster create {{ node1_hostname }}:{{ redis_1_port }} {{ node1_hostname }}:{{ redis_2_port }} {{ node2_hostname }}:{{ redis_1_port }} {{ node2_hostname }}:{{ redis_2_port }} {{ node3_hostname }}:{{ redis_1_port }} {{ node3_hostname }}:{{ redis_2_port }}" ]
+#  when: inventory_hostname == node1_hostname
+
+
+#- debug: var=hostvars[inventory_hostname]['ansible_default_ipv4']['address']
+
+
+- name: Print IP addresses
+  debug:
+    var: hostvars[item]['ansible_eth0']['ipv4']['address']
+  with_items: "{{ groups['nodes'] }}"

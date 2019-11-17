@@ -25,3 +25,8 @@ container_2_ip: 172.18.10.3
 node1_hostname: Node1
 node2_hostname: Node2
 node3_hostname: Node3
+
+#
+main_nodes_ips: "{{ groups['nodes'] | map('extract', hostvars, ['ansible_ssh_host']) | join(',') }}"
+main_nodes_ips_with_port: "{{ groups['mainnodes'] | map('extract', hostvars, ['ansible_ssh_host']) | join(':3000,') }}:3000"
+
