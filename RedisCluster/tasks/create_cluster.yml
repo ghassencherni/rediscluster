@@ -11,8 +11,18 @@
 
 #- debug: var=hostvars[inventory_hostname]['ansible_default_ipv4']['address']
 
+- name: create file
+  file:
+    path: /home/ansible/test.txt
+    state: touch
 
-- name: Print IP addresses
-  debug:
-    var: hostvars[item]['ansible_eth0']['ipv4']['address']
-  with_items: "{{ groups['nodes'] }}"
+- name: task1
+  lineinfile:
+    path: /home/ansible/test.txt
+    line: "{{ groups['nodes'] | join(':6001 ')}}"
+
+- name: task2
+  lineinfile:
+    path: /home/ansible/test.txt
+    #line: "{{ groups['nodes'] | map('extract', hostvars, ['ansible_default_ipv4']) | join(',') }}"
+    line: "{{ groups['nodes'] | map('extract', ansible_default_ipv4, ['address']) | join(',') }}"
