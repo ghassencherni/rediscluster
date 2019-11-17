@@ -2,5 +2,6 @@
 - hosts: nodes
   become: yes
   roles:
-#    - geerlingguy.docker
+    - geerlingguy.docker
+    #- abaez.docker
     - RedisCluster

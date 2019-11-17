@@ -1,14 +1,27 @@
 ---
 # defaults file for RedisCluster
 
+#Contiainer 1 configuration
 container_1_name: redis-1
-redis_1_data_port: 16001
-redis_1_port: 6001
+redis_1_port: 6001                   # The normal Redis TCP port used to serve clients
+redis_1_data_port: 16001             # Adding 10000 to the Redis port
 
+#Container 2 configuration
 container_2_name: redis-2
 redis_2_data_port: 16002
 redis_2_port: 6002
 
+
+#Bridge network configuration
+bridge_name: redis_bridge
+bridge_subnet: 172.18.10.0/16
+bridge_gateway: 172.18.10.1
+
+#Containers IP must be in bridge subnet
 container_1_ip: 172.18.10.2
 container_2_ip: 172.18.10.3
 
+#nodes hostames : Used to create th redis cluster 
+node1_hostname: Node1
+node2_hostname: Node2
+node3_hostname: Node3

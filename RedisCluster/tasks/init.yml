@@ -1,33 +1,36 @@
 ---
-- name: Configure
+- name: Create the conf file of each container 
   template: src=redis.conf.j2   dest=/tmp/redis.conf.{{ item.name }} mode=0777
   with_items:
     - { port: "{{ redis_1_port }}", data_port: "{{ redis_1_data_port }}", name: "{{ container_1_name }}", ip: "{{ container_1_ip }}" }
     - { port: "{{ redis_2_port }}", data_port: "{{ redis_2_data_port }}", name: "{{ container_2_name }}", ip: "{{ container_2_ip }}" }
 
 
-
-- name: Create redis bridge network
+#Create a bridge network interface on each node (3 nodes)
+- name: Create redis bridge network   
   docker_network:
-    name: redis_bridge
+    name: "{{ bridge_name }}"
     ipam_options:
-      subnet: "172.18.10.0/16"
-      gateway: "172.18.10.1"
+      subnet: "{{ bridge_subnet }}"
+      gateway: "{{ bridge_gateway }}"
 
-- name: Start Redis 1 container
+#Start two containers in each node (3 nodes)
+- name: Start Redis containers           
   docker_container:
     name: "{{ item.name }}"
     recreate: yes
     image: "redis:latest"
     volumes:
       - /tmp/redis.conf.{{ item.name }}:/usr/local/etc/redis/redis.conf
+      - /home/ansible/data-{{ item.name }}:/data
     ports:
       - "{{ item.port }}:{{ item.port }}"
       - "{{ item.data_port }}:{{ item.data_port }}"
     networks:
-      - name: redis_bridge
+      - name: "{{ bridge_name }}"
         ipv4_address: "{{ item.ip }}"
     command: redis-server /usr/local/etc/redis/redis.conf
   with_items:
      - { port: "{{ redis_1_port }}", data_port: "{{ redis_1_data_port }}", name: "{{ container_1_name }}", ip: "{{ container_1_ip }}" }
      - { port: "{{ redis_2_port }}", data_port: "{{ redis_2_data_port }}", name: "{{ container_2_name }}", ip: "{{ container_2_ip }}" }
+
