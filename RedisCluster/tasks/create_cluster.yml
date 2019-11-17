@@ -1,28 +1,12 @@
-#- name: Create Cluster
-#  docker_container:
-#    name: redis-cluster
-#    image: redis:latest
-#    state: started
-#    ports:
-#    - "6379:6379"
-#    command: [ "sh", "-c", "echo 'yes' | redis-cli --cluster create {{ node1_hostname }}:{{ redis_1_port }} {{ node1_hostname }}:{{ redis_2_port }} {{ node2_hostname }}:{{ redis_1_port }} {{ node2_hostname }}:{{ redis_2_port }} {{ node3_hostname }}:{{ redis_1_port }} {{ node3_hostname }}:{{ redis_2_port }}" ]
-#  when: inventory_hostname == node1_hostname
+- name: Create Cluster
+  docker_container:
+    name: redis-cluster
+    image: redis:latest
+    state: started
+    ports:
+    - "6379:6379"
+    volumes:
+    - /etc/redis/redis-cli.sh:/redis-cli.sh
+    command: [ "sh", "-c", "echo 'yes' | redis-cli --cluster create {{ node1_ip }}:{{ redis_1_port }} {{ node1_ip }}:{{ redis_2_port }} {{ node2_ip }}:{{ redis_1_port }} {{ node2_ip }}:{{ redis_2_port }} {{ node3_ip }}:{{ redis_1_port }} {{ node3_ip }}:{{ redis_2_port }}" ] 
+  when: inventory_hostname == "Node1"
 
-
-#- debug: var=hostvars[inventory_hostname]['ansible_default_ipv4']['address']
-
-- name: create file
-  file:
-    path: /home/ansible/test.txt
-    state: touch
-
-- name: task1
-  lineinfile:
-    path: /home/ansible/test.txt
-    line: "{{ groups['nodes'] | join(':6001 ')}}"
-
-- name: task2
-  lineinfile:
-    path: /home/ansible/test.txt
-    #line: "{{ groups['nodes'] | map('extract', hostvars, ['ansible_default_ipv4']) | join(',') }}"
-    line: "{{ groups['nodes'] | map('extract', ansible_default_ipv4, ['address']) | join(',') }}"

@@ -2,9 +2,7 @@
 - name: Create the conf file of each container 
   template: src=redis.conf.j2   dest=/tmp/redis.conf.{{ item.name }} mode=0777
   with_items:
-          #- { port: "{{ redis_1_port }}", data_port: "{{ redis_1_data_port }}", name: "{{ container_1_name }}", ip: "{{ container_1_ip }}" }
     - { port: "{{ redis_1_port }}", data_port: "{{ redis_1_data_port }}", name: "{{ container_1_name }}", ip: "{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}" }
-      #- { port: "{{ redis_2_port }}", data_port: "{{ redis_2_data_port }}", name: "{{ container_2_name }}", ip: "{{ container_2_ip }}" }
     - { port: "{{ redis_2_port }}", data_port: "{{ redis_2_data_port }}", name: "{{ container_2_name }}", ip: "{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}" }
 
 

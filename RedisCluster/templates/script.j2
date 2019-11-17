@@ -1,0 +1,5 @@
+{% for host in groups['nodes'] %}
+  {{ hostvars[host]['ansible_eth0']['ipv4']['address'] | join(' ') }}
+{% endfor %}
+
+{{ groups['nodes'] | map('extract', hostvars, ['ansible_ssh_host']) | join(',') }}
