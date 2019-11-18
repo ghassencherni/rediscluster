@@ -1,11 +1,5 @@
-- name: Create Cluster
-  docker_container:
-    name: redis-cluster
-    image: redis:latest
-    state: started
-    ports:
-    - "6379:6379"
-    command: redis-server /usr/local/etc/redis/redis.conf
-    #command: [ "sh", "-c", "echo 'yes' | redis-cli --cluster create {{ node1_ip }}:{{ redis_1_port }} {{ node1_ip }}:{{ redis_2_port }} {{ node2_ip }}:{{ redis_1_port }} {{ node2_ip }}:{{ redis_2_port }} {{ node3_ip }}:{{ redis_1_port }} {{ node3_ip }}:{{ redis_2_port }}" ] 
-  when: inventory_hostname == "Node1"
+#
+- name: Start the redis cluster
+  command: docker exec -it {{ container_1_name }} bash -c "echo 'yes' | redis-cli --cluster create {{ node1_ip}}:{{ redis_1_port }} {{ node1_ip }}:{{ redis_2_port }} {{ node2_ip }}:{{ redis_1_port }} {{ node2_ip }}:{{ redis_2_port }} {{ node3_ip }}:{{ redis_1_port }} {{ node3_ip }}:{{ redis_2_port }} --cluster-replicas 1"
+  when: "'Node1' in inventory_hostname"
 
