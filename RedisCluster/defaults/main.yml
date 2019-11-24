@@ -22,6 +22,6 @@ container_1_ip: 172.18.10.2
 container_2_ip: 172.18.10.3
 
 #nodes IP : Used to create the redis cluster, IPs can be different from IP hosts used by ansible ( example: ansible uses public IP, redis cluster nodes uses private IPs to communicate )
-node1_ip: 10.0.0.6
-node2_ip: 10.0.0.10
-node3_ip: 10.0.0.11
+node1_ip: 10.0.0.4
+node2_ip: 10.0.0.5
+node3_ip: 10.0.0.6

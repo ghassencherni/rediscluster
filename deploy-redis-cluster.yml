@@ -2,7 +2,5 @@
 - hosts: nodes
   become: yes
   roles:
-     #- geerlingguy.docker
-     #- abaez.docker
-     #- geerlingguy.docker
+    - ansible-role-docker
     - RedisCluster
