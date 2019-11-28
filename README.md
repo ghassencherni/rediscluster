@@ -12,7 +12,7 @@ This deployement script use the role ansible-role-docker created by [githubixx](
 
 To run redis cluster :
 
-  1. Download the repo or use git to clone in your home directory: git clone https://github.com/ghassencherni/mysqlcluster.git
+  1. Download the repo or use git to clone in your home directory: git clone https://github.com/ghassencherni/rediscluster.git
   2. Add the entry the IPs of your nodes (node1, node2, node3) in the hosts file ( /etc/hosts ) 
   5. Move to the downloaded repo : cd mysqlcluster
   6. Run the command: "ansible-playbook deploy-redis-cluster.yml -i hosts" 
