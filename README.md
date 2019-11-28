@@ -9,6 +9,7 @@ Ansible to deploy redis cluster in 6 docker containers (3 masters and 3 slaves)
 ## Getting Started
 
 This deployement script use the role ansible-role-docker created by [githubixx](https://github.com/githubixx) in order to install Docker components on the Nodes.
+
 *If you get some issues with the docker installation using the ansible-role-docker, please tro install it manually. 
 
 To run redis cluster :
