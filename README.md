@@ -22,9 +22,13 @@ To run redis cluster :
 ## How to test the deploy :
 
    1. Connect to any redis docker on the 3 nodes 
+   
    2- run the command :
+   
    redis-cli -p 6001 ( for the container 1 , redis-1) or redis-cli -p 6002 ( for the redis-2) 
+   
    3- check the replication status:
+   
    redis-cli > info replication
    
  Note) for more information about redis cluster please check redis.io
