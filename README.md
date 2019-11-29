@@ -75,3 +75,6 @@ IP node: Used to create the redis cluster, IPs can be different from IP hosts us
 
      node3_ip: 10.0.0.6
 
+## Author Information
+
+This script  was created by [Ghassen CHARNI](https://github.com/ghassencherni/)
